@@ -33,7 +33,8 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
-      - uses: maierj/fastlane-action@v3.1.0
+      - name: Install Fastlane
+        run: gem install fastlane -NV
       # Install dependencies
       - name: Install npm dependencies
         run: npm install
