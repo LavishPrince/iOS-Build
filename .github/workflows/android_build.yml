@@ -6,7 +6,14 @@ jobs:
   build:
     runs-on: ubuntu-latest # Uses macOS runner with Xcode pre-installed
 
+    
     steps:
+
+      - name: Setup Android SDK Tools
+        # You may pin to the exact commit or the version.
+        # uses: android-actions/setup-android@00854ea68c109d98c75d956347303bf7c45b0277
+        uses: android-actions/setup-android@v3.2.1
+          
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -27,5 +34,13 @@ jobs:
       - name: Install pod dependencies
         run: cd ios && pod install
       # Build the iOS app
+<<<<<<< HEAD:.github/workflows/android_build.yml
       - name: Build Android App
         run: cd android && bundle exec fastlane beta
+||||||| d229063:.github/workflows/ios_build.yml
+      - name: Build iOS App
+        run: cd android && bundle exec fastlane beta
+=======
+      - name: Build iOS App
+        run: cd android && fastlane beta
+>>>>>>> fe9d7aa8a0893a35aec7a4476793e6809bf31956:.github/workflows/ios_build.yml
