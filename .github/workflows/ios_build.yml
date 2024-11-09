@@ -1,6 +1,7 @@
 # .github/workflows/ios-build.yml
 name: iOS Build and Deploy
-
+on:
+  workflow_dispatch:
 jobs:
   build:
     runs-on: macos-latest # Uses macOS runner with Xcode pre-installed
