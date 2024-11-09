@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: ubuntu-latest # Uses macOS runner with Xcode pre-installed
+    runs-on: macos-latest # Uses macOS runner with Xcode pre-installed
 
     steps:
       - name: Checkout repository
