@@ -31,8 +31,7 @@ jobs:
 
       # Install Fastlane
       - name: Install Fastlane
-        run: |
-          brew install fastlane
+        uses: tashi-iu/setup-fastlane@1.0.2
       # Install dependencies
       - name: Install npm dependencies
         run: npm install
