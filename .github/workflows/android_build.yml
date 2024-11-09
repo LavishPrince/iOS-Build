@@ -29,9 +29,11 @@ jobs:
         with:
           node-version: '22'
 
-      # Install Fastlane
-      - name: Install Fastlane
-        uses: tashi-iu/setup-fastlane@1.0.2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+      - uses: maierj/fastlane-action@v3.1.0
       # Install dependencies
       - name: Install npm dependencies
         run: npm install
