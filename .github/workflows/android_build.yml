@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: macos-latest # Uses macOS runner with Xcode pre-installed
+    runs-on: ubuntu-latest # Uses macOS runner with Xcode pre-installed
 
     steps:
       - name: Checkout repository
@@ -27,5 +27,5 @@ jobs:
       - name: Install pod dependencies
         run: cd ios && pod install
       # Build the iOS app
-      - name: Build iOS App
+      - name: Build Android App
         run: cd android && bundle exec fastlane beta
