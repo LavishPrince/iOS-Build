@@ -19,10 +19,7 @@ jobs:
       # Install Fastlane
       - name: Install Fastlane
         run: |
-          gem install bundler
-          bundle install
-          bundle exec fastlane --version  # Confirm Fastlane installation
-
+          brew install fastlane
       # Install dependencies
       - name: Install npm dependencies
         run: npm install
