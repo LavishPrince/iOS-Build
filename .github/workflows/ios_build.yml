@@ -25,5 +25,5 @@ jobs:
       - name: Install pod dependencies
         run: cd ios && pod install
       # Build the iOS app
-      - name: Build Android App
+      - name: Build iOS App
         run: cd ios && fastlane build
