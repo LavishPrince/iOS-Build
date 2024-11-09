@@ -24,4 +24,4 @@ jobs:
 
       # Build the iOS app
       - name: Build Android App
-        run: cd ios && fastlane custom_lane
+        run: cd ios && fastlane build
