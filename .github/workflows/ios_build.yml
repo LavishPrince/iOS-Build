@@ -1,0 +1,27 @@
+# .github/workflows/ios-build.yml
+name: iOS Build and Deploy
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest # Uses macOS runner with Xcode pre-installed
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js 22
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install Fastlane
+        run: brew install fastlane
+      # Install dependencies
+      - name: Install npm dependencies
+        run: npm install
+
+      # Build the iOS app
+      - name: Build Android App
+        run: cd ios && fastlane custom_lane
