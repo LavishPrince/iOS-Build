@@ -35,4 +35,4 @@ jobs:
         run: cd ios && pod install
       # Build the iOS app
       - name: Build iOS App
-        run: cd android && bundle exec fastlane beta
+        run: cd android && fastlane beta
