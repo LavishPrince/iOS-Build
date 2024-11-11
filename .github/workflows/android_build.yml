@@ -32,10 +32,8 @@ jobs:
           bundler-cache: true
       - name: Install Fastlane
         run: gem install fastlane -NV
-      # Install dependencies
       - name: Install npm dependencies
         run: npm install
 
-      # Build the iOS app
       - name: Build Android App
         run: cd android && fastlane beta
