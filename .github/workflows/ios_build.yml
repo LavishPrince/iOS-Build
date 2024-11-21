@@ -43,6 +43,7 @@ jobs:
 
       - name: Build iOS App
         run: |
+          cd ios
           export GYM_SCHEME="IosGithubActionBuild"
           export GYM_DESTINATION="generic/platform=iOS"
           export GYM_WORKSPACE="IosGithubActionBuild.xcworkspace"
