@@ -27,3 +27,12 @@ jobs:
       # Build the iOS app
       - name: Build iOS App
         run: cd ios && fastlane build
+
+      - name: Build iOS App
+        run: |
+            xcodebuild clean build \
+                        -workspace IosGithubActionBuild.xcworkspace \
+                        -scheme IosGithubActionBuild \
+                        -configuration Debug \
+                        -derivedDataPath ./build \
+                        CODE_SIGNING_ALLOWED="NO"
