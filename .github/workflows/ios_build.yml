@@ -37,6 +37,5 @@ jobs:
                         -configuration Debug \
                         -destination 'generic/platform=iOS' \
                         -derivedDataPath ./build \
-                        -quiet \
                         CODE_SIGNING_ALLOWED="NO" | xcbeautify
             
