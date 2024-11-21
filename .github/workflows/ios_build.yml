@@ -37,5 +37,6 @@ jobs:
                         -configuration Debug \
                         -destination 'generic/platform=iOS' \
                         -derivedDataPath ./build \
+                        OTHER_SWIFT_FLAGS="-suppress-warnings" \
                         CODE_SIGNING_ALLOWED="NO" | xcbeautify
             
