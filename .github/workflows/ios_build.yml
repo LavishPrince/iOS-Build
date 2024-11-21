@@ -39,4 +39,4 @@ jobs:
                         -derivedDataPath ./build \
                         -quiet \
                         CODE_SIGNING_ALLOWED="NO" | xcpretty -r junit
-            eza --tree ./build
+            
