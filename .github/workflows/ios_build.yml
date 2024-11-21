@@ -83,6 +83,7 @@ jobs:
 
           
       - name: Cleanup
+        if: always()
         run: |
           # Remove the decrypted certificate and provisioning profile
           rm -rf certificate.p12 profile.mobileprovision
