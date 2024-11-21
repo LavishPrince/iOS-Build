@@ -31,7 +31,7 @@ jobs:
       - name: Build iOS App
         run: |
             cd ios
-            xcodebuild clean build \
+            xcodebuild clean archive \
                         -workspace IosGithubActionBuild.xcworkspace \
                         -scheme IosGithubActionBuild \
                         -configuration Debug \
@@ -39,5 +39,6 @@ jobs:
                         -derivedDataPath ./build \
                         OTHER_SWIFT_FLAGS="-suppress-warnings" \
                         CODE_SIGNING_ALLOWED="NO" | xcbeautify
+            ls build
                         
             
