@@ -39,4 +39,29 @@ jobs:
                         -derivedDataPath ./build \
                         OTHER_SWIFT_FLAGS="-suppress-warnings" \
                         CODE_SIGNING_ALLOWED="NO" | xcbeautify
+      - name: Archive iOS App
+        run: |
+                cd ios
+                 xcodebuild -exportArchive \
+                        -archivePath ./build/IosGithubActionBuild.xcarchive \
+                        -exportPath ./export
+                        -exportOptionsPlist <(cat <<EOF
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+                                <plist version="1.0">
+                                <dict>
+                                    <key>method</key>
+                                    <string>app-store</string>
+                                    <key>teamID</key>
+                                    <string>$APPLE_TEAM_ID</string>
+                                    <key>uploadSymbols</key>
+                                    <true/>
+                                    <key>uploadBitcode</key>
+                                    <true/>
+                                </dict>
+                                </plist>
+                                EOF
+                                )
+                  ls build
+                        
             
