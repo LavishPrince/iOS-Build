@@ -28,7 +28,7 @@ jobs:
       #- name: Build iOS App
       #  run: cd ios && fastlane build
       - name: Set up provisioning profile
-        run: echo "$PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+        run: mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles && echo "$PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
         env:
           PROVISIONING_PROFILE: ${{ secrets.PROVISIONING_PROFILE }}
 
