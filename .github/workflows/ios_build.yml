@@ -25,11 +25,12 @@ jobs:
       - name: Install pod dependencies
         run: cd ios && pod install
       # Build the iOS app
-      - name: Build iOS App
-        run: cd ios && fastlane build
+      #- name: Build iOS App
+      #  run: cd ios && fastlane build
 
       - name: Build iOS App
         run: |
+            cd ios
             xcodebuild clean build \
                         -workspace IosGithubActionBuild.xcworkspace \
                         -scheme IosGithubActionBuild \
