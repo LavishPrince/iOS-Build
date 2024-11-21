@@ -58,8 +58,8 @@ jobs:
       #       ls build
 
       - name: Build iOS App
-        env:
-          GYM_EXPORT_TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
+        # env:
+        #   GYM_EXPORT_TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
         run: |
           cd ios
           export GYM_SCHEME="IosGithubActionBuild"
@@ -69,6 +69,7 @@ jobs:
           export GYM_OUTPUT_DIRECTORY="./build"
           export GYM_OUTPUT_NAME="GenericBuild.ipa"
           export GYM_CLEAN=true
+          export GYM_EXPORT_TEAM_ID="M6ENXWGY3Q"
           fastlane run build_ios_app
           
       - name:  Ios App Upload
