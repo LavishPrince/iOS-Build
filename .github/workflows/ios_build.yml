@@ -51,6 +51,6 @@ jobs:
           export GYM_OUTPUT_DIRECTORY="./build"
           export GYM_OUTPUT_NAME="GenericBuild.ipa"
           export GYM_CLEAN=true
-          export GYM_CODE_SIGNING_ALLOWED="NO"
+          export GYM_XCARGS="CODE_SIGNING_ALLOWED=NO"
           fastlane run build_ios_app
             
