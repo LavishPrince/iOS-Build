@@ -38,5 +38,5 @@ jobs:
                         -destination 'generic/platform=iOS' \
                         -derivedDataPath ./build \
                         -quiet \
-                        CODE_SIGNING_ALLOWED="NO" | xcpretty --quiet
+                        CODE_SIGNING_ALLOWED="NO" | xcpretty --simple
             
