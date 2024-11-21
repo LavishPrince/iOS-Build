@@ -17,7 +17,7 @@ jobs:
           node-version: '20'
 
       - name: Install Fastlane
-        run: brew install fastlane
+        run: brew install fastlane xcbeautify
       # Install dependencies
       - name: Install npm dependencies
         run: npm install
