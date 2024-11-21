@@ -58,6 +58,8 @@ jobs:
       #       ls build
 
       - name: Build iOS App
+        env:
+          GYM_EXPORT_TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
         run: |
           cd ios
           export GYM_SCHEME="IosGithubActionBuild"
