@@ -17,7 +17,7 @@ jobs:
           node-version: '20'
 
       - name: Install Fastlane
-        run: brew install fastlane xcbeautify
+        run: brew install fastlane
       # Install dependencies
       - name: Install npm dependencies
         run: npm install
@@ -53,7 +53,7 @@ jobs:
                                     <key>method</key>
                                     <string>app-store</string>
                                     <key>teamID</key>
-                                    <string>$APPLE_TEAM_ID</string>
+                                    <string>"Team ASTRO"/string>
                                     <key>uploadSymbols</key>
                                     <true/>
                                     <key>uploadBitcode</key>
