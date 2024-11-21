@@ -17,7 +17,7 @@ jobs:
           node-version: '20'
 
       - name: Install Fastlane
-        run: brew install fastlane
+        run: brew install fastlane eza
       # Install dependencies
       - name: Install npm dependencies
         run: npm install
@@ -39,3 +39,4 @@ jobs:
                         -derivedDataPath ./build \
                         -quiet \
                         CODE_SIGNING_ALLOWED="NO" | xcpretty
+            eza --tree ./build
