@@ -36,4 +36,5 @@ jobs:
                         -scheme IosGithubActionBuild \
                         -configuration Debug \
                         -derivedDataPath ./build \
+                        -quiet \
                         CODE_SIGNING_ALLOWED="NO"
