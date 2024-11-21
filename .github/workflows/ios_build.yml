@@ -62,6 +62,7 @@ jobs:
           TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
         run: |
           cd ios
+          fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"TEAM_ID"
           export GYM_SCHEME="IosGithubActionBuild"
           export GYM_DESTINATION="generic/platform=iOS"
           export GYM_WORKSPACE="IosGithubActionBuild.xcworkspace"
@@ -69,7 +70,7 @@ jobs:
           export GYM_OUTPUT_DIRECTORY="./build"
           export GYM_OUTPUT_NAME="GenericBuild.ipa"
           export GYM_CLEAN=true
-          fastlane run build_ios_app development_team:"$TEAM_ID"
+          fastlane run build_ios_app 
           
       - name:  Ios App Upload
         run: |
