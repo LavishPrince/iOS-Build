@@ -35,6 +35,7 @@ jobs:
                         -workspace IosGithubActionBuild.xcworkspace \
                         -scheme IosGithubActionBuild \
                         -configuration Debug \
+                        -destination 'generic/platform=iOS' \
                         -derivedDataPath ./build \
                         -quiet \
-                        CODE_SIGNING_ALLOWED="NO"
+                        CODE_SIGNING_ALLOWED="NO" | xcpretty
