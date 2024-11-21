@@ -31,14 +31,14 @@ jobs:
       - name: Build iOS App
         run: |
             cd ios
-            xcodebuild clean archive \
+            xcodebuild clean build \
                         -workspace IosGithubActionBuild.xcworkspace \
                         -scheme IosGithubActionBuild \
                         -configuration Debug \
                         -destination 'generic/platform=iOS' \
                         -derivedDataPath ./build \
                         OTHER_SWIFT_FLAGS="-suppress-warnings" \
-                        CODE_SIGNING_ALLOWED="NO" | xcbeautify
+                        CODE_SIGNING_ALLOWED="NO" | xcbeautify -q
             ls build
                         
             
