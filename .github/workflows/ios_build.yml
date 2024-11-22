@@ -79,14 +79,15 @@ jobs:
         run: |
           cd ios
           chmod -R 777 .
-          rm -rf ~/Library/Developer/Xcode/DerivedData
-          pod deintegrate || true
-          pod install --repo-update
           plutil -create xml1 -o ExportOptions.plist -- \
-          -replace method -string app-store \
-          -replace uploadBitcode -bool true \
-          -replace uploadSymbols -bool true 
-              cat ExportOptions.plist
+            -replace method -string app-store \
+            -replace uploadBitcode -bool true \
+            -replace uploadSymbols -bool true
+           cat ExportOptions.plist
+          # rm -rf ~/Library/Developer/Xcode/DerivedData
+          # pod deintegrate || true
+          # pod install --repo-update
+             
           # fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
           # xcodebuild \
           #   -workspace "IosGithubActionBuild.xcworkspace" \
@@ -116,15 +117,15 @@ jobs:
           #   clean:true \
           #   xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
           
-      - name:  Ios App Upload
-        run: |
-          fastlane run app_store_connect_api_key \
-          key_id:${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }} \
-          issuer_id:${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} \
-          key_content:${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
+      # - name:  Ios App Upload
+      #   run: |
+      #     fastlane run app_store_connect_api_key \
+      #     key_id:${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }} \
+      #     issuer_id:${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} \
+      #     key_content:${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
 
-          fastlane run upload_to_testflight \
-            ipa:"./build/GenericBuild.ipa"
+      #     fastlane run upload_to_testflight \
+      #       ipa:"./build/GenericBuild.ipa"
 
           
       - name: Cleanup
