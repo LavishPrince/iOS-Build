@@ -87,19 +87,31 @@ jobs:
             -workspace "IosGithubActionBuild.xcworkspace" \
             -scheme "IosGithubActionBuild" \
             -configuration Release \
+            -destination "generic/platform=iOS" \
             -archivePath "./build/GenericBuild.xcarchive" \
             CODE_SIGN_IDENTITY="iPhone Distribution" \
             CODE_SIGN_STYLE=Manual \
             PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
             clean archive | xcbeautify
-          fastlane run build_ios_app \
-            scheme:"IosGithubActionBuild" \
-            workspace:"IosGithubActionBuild.xcworkspace" \
-            export_method:"app-store" \
-            output_directory:"./build" \
-            output_name:"GenericBuild.ipa" \
-            clean:true \
-            xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
+              plutil -create xml1 ExportOptions.plist
+              plutil -insert method -string "app-store" ExportOptions.plist
+              plutil -insert destination -string "export" ExportOptions.plist
+          xcodebuild -exportArchive \
+            -archivePath "./build/GenericBuild.xcarchive" \
+            -exportPath "./build" \
+            -exportOptionsPlist ./ExportOptions.plist \
+            CODE_SIGN_IDENTITY="iPhone Distribution" \
+            CODE_SIGN_STYLE=Manual \
+            PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" | xcbeautify
+          ls build
+          # fastlane run build_ios_app \
+          #   scheme:"IosGithubActionBuild" \
+          #   workspace:"IosGithubActionBuild.xcworkspace" \
+          #   export_method:"app-store" \
+          #   output_directory:"./build" \
+          #   output_name:"GenericBuild.ipa" \
+          #   clean:true \
+          #   xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
           
       - name:  Ios App Upload
         run: |
