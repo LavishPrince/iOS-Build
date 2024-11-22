@@ -85,7 +85,7 @@ jobs:
           # plutil -insert uploadSymbols -bool true ExportOptions.plist
 
 
-           cat ExportOptions.plist
+          # cat ExportOptions.plist
           rm -rf ~/Library/Developer/Xcode/DerivedData
           pod deintegrate || true
           pod install --repo-update
@@ -116,6 +116,8 @@ jobs:
             export_method:"app-store" \
             output_directory:"./build" \
             output_name:"GenericBuild.ipa" \
+            destination:"generic/platform=iOS" \
+            configuration:"Release" \
             clean:true \
             xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
           eza --tree build
