@@ -72,7 +72,7 @@ jobs:
           export GYM_CLEAN=true
           # export GYM_XCARGS="-allowProvisioningUpdates"
           export GYM_XCARGS="CODE_SIGN_STYLE=Manual"
-          fastlane run build_ios_app 
+          fastlane run build_ios_app provisioning_profile_specifier:"app-store-profile-sample-github-actions"
           
       - name:  Ios App Upload
         run: |
