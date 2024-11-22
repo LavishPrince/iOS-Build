@@ -44,35 +44,47 @@ jobs:
           CERTIFICATE_P12: ${{ secrets.CERTIFICATE_P12 }}
           CERT_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
 
-      # - name: Build iOS App
-      #   run: |
-      #       cd ios
-      #       xcodebuild clean build \
-      #                   -workspace IosGithubActionBuild.xcworkspace \
-      #                   -scheme IosGithubActionBuild \
-      #                   -configuration Debug \
-      #                   -destination 'generic/platform=iOS' \
-      #                   -derivedDataPath ./build \
-      #                   OTHER_SWIFT_FLAGS="-suppress-warnings" \
-      #                   CODE_SIGNING_ALLOWED="NO" | xcbeautify -q
-      #       ls build
-
       - name: Build iOS App
-        env:
-          TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
         run: |
-          cd ios
-          fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
-          export GYM_SCHEME="IosGithubActionBuild"
-          export GYM_DESTINATION="generic/platform=iOS"
-          export GYM_WORKSPACE="IosGithubActionBuild.xcworkspace"
-          export GYM_EXPORT_METHOD="app-store"
-          export GYM_OUTPUT_DIRECTORY="./build"
-          export GYM_OUTPUT_NAME="GenericBuild.ipa"
-          export GYM_CLEAN=true
-          # export GYM_XCARGS="-allowProvisioningUpdates"
-          export GYM_XCARGS="COCOAPODS_PARALLEL_CODE_SIGN=true CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
-          fastlane run build_ios_app --verbose
+             cd ios
+              fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
+              xcodebuild \
+                -workspace "IosGithubActionBuild.xcworkspace" \
+                -scheme "IosGithubActionBuild" \
+                -destination "generic/platform=iOS" \
+                -configuration Release \
+                clean build \
+                CODE_SIGN_IDENTITY="iPhone Distribution" \
+                CODE_SIGN_STYLE="Manual" \
+                PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
+                COCOAPODS_PARALLEL_CODE_SIGN=true \
+                -archivePath "./build/GenericBuild.xcarchive" \
+                archive
+              plutil -create xml1 ExportOptions.plist
+              plutil -insert method -string "app-store" ExportOptions.plist
+              plutil -insert destination -string "export" ExportOptions.plist
+              xcodebuild -exportArchive \
+                -archivePath "./build/GenericBuild.xcarchive" \
+                -exportPath "./build" \
+                -exportOptionsPlist "ExportOptions.plist"
+
+
+      # - name: Build iOS App
+      #   env:
+      #     TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
+      #   run: |
+      #     cd ios
+      #     fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
+      #     export GYM_SCHEME="IosGithubActionBuild"
+      #     export GYM_DESTINATION="generic/platform=iOS"
+      #     export GYM_WORKSPACE="IosGithubActionBuild.xcworkspace"
+      #     export GYM_EXPORT_METHOD="app-store"
+      #     export GYM_OUTPUT_DIRECTORY="./build"
+      #     export GYM_OUTPUT_NAME="GenericBuild.ipa"
+      #     export GYM_CLEAN=true
+      #     # export GYM_XCARGS="-allowProvisioningUpdates"
+      #     export GYM_XCARGS="COCOAPODS_PARALLEL_CODE_SIGN=true CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
+      #     fastlane run build_ios_app --verbose
           
       - name:  Ios App Upload
         run: |
