@@ -82,9 +82,10 @@ jobs:
           rm -rf ~/Library/Developer/Xcode/DerivedData
           pod deintegrate || true
           pod install --repo-update
-              plutil -create xml1 ExportOptions.plist
-              plutil -insert method -string "app-store" ExportOptions.plist
-              plutil -insert destination -string "export" ExportOptions.plist
+          plutil -create xml1 -o ExportOptions.plist -- \
+          -replace method -string app-store \
+          -replace uploadBitcode -bool true \
+          -replace uploadSymbols -bool true 
               cat ExportOptions.plist
           # fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
           # xcodebuild \
