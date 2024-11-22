@@ -49,6 +49,12 @@ jobs:
         env:
           TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
         run: |
+             sed -i '' '/name = "\\[CP\\] Embed Pods Frameworks";/{
+              n
+              a\
+              outputPaths = ("$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)");
+              }' IosGithubActionBuild.xcodeproj/project.pbxproj
+
              cd ios
               fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
               xcodebuild \
