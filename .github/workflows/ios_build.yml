@@ -40,6 +40,7 @@ jobs:
           security list-keychains -s ~/Library/Keychains/build.keychain
           security list-keychains -s build.keychain
           security set-keychain-settings build.keychain
+          security unlock-keychain -p "$CERT_PASSWORD" ~/Library/Keychains/build.keychain
         env:
           CERTIFICATE_P12: ${{ secrets.CERTIFICATE_P12 }}
           CERT_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
