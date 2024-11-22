@@ -71,6 +71,7 @@ jobs:
           export GYM_OUTPUT_NAME="GenericBuild.ipa"
           export GYM_CLEAN=true
           # export GYM_XCARGS="-allowProvisioningUpdates"
+          export GYM_XCARGS="CODE_SIGN_STYLE=Manual"
           fastlane run build_ios_app 
           
       - name:  Ios App Upload
