@@ -45,6 +45,8 @@ jobs:
           CERT_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
 
       - name: Build iOS App
+        env:
+          TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
         run: |
              cd ios
               fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
