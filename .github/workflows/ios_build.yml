@@ -71,7 +71,7 @@ jobs:
           export GYM_OUTPUT_NAME="GenericBuild.ipa"
           export GYM_CLEAN=true
           # export GYM_XCARGS="-allowProvisioningUpdates"
-          export GYM_XCARGS="CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
+          export GYM_XCARGS="COCOAPODS_PARALLEL_CODE_SIGN=true CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
           fastlane run build_ios_app
           
       - name:  Ios App Upload
