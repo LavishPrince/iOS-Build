@@ -83,7 +83,7 @@ jobs:
           pod deintegrate || true
           pod install --repo-update
           fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
-          fastlane run gym \
+          fastlane run build_ios_app \
             scheme:"IosGithubActionBuild" \
             workspace:"IosGithubActionBuild.xcworkspace" \
             export_method:"app-store" \
