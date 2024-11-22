@@ -79,10 +79,11 @@ jobs:
         run: |
           cd ios
           chmod -R 777 .
-          plutil -create xml1 -o ExportOptions.plist -- \
-            -replace method -string app-store \
-            -replace uploadBitcode -bool true \
-            -replace uploadSymbols -bool true
+          plutil -create xml1 -o ExportOptions.plist -- 
+          plutil -replace method -string app-store ExportOptions.plist
+          plutil -replace uploadBitcode -bool true ExportOptions.plist
+          plutil -replace uploadSymbols -bool true ExportOptions.plist
+
            cat ExportOptions.plist
           # rm -rf ~/Library/Developer/Xcode/DerivedData
           # pod deintegrate || true
