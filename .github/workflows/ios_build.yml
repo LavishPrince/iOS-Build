@@ -17,7 +17,7 @@ jobs:
           node-version: '20'
 
       - name: Install Fastlane
-        run: brew install fastlane cocoapods
+        run: brew install fastlane cocoapods eza
       # Install dependencies
       - name: Install npm dependencies
         run: npm install
@@ -103,7 +103,7 @@ jobs:
             CODE_SIGN_IDENTITY="iPhone Distribution" \
             CODE_SIGN_STYLE=Manual \
             PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" | xcbeautify
-          ls build
+          eza --tree build
           # fastlane run build_ios_app \
           #   scheme:"IosGithubActionBuild" \
           #   workspace:"IosGithubActionBuild.xcworkspace" \
