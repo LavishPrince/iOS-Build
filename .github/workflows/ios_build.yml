@@ -40,35 +40,34 @@ jobs:
           security list-keychains -s ~/Library/Keychains/build.keychain
           security list-keychains -s build.keychain
           security set-keychain-settings build.keychain
-          security unlock-keychain -p "$CERT_PASSWORD" ~/Library/Keychains/build.keychain
         env:
           CERTIFICATE_P12: ${{ secrets.CERTIFICATE_P12 }}
           CERT_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
 
-      - name: Build iOS App
-        env:
-          TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
-        run: |
-             cd ios
-              fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
-              xcodebuild \
-                -workspace "IosGithubActionBuild.xcworkspace" \
-                -scheme "IosGithubActionBuild" \
-                -destination "generic/platform=iOS" \
-                -configuration Release \
-                clean build \
-                CODE_SIGN_IDENTITY="iPhone Distribution" \
-                CODE_SIGN_STYLE="Manual" \
-                PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
-                -archivePath "./build/GenericBuild.xcarchive" \
-                archive | xcbeautify
-              plutil -create xml1 ExportOptions.plist
-              plutil -insert method -string "app-store" ExportOptions.plist
-              plutil -insert destination -string "export" ExportOptions.plist
-              xcodebuild -exportArchive \
-                -archivePath "./build/GenericBuild.xcarchive" \
-                -exportPath "./build" \
-                -exportOptionsPlist "ExportOptions.plist"
+      # - name: Build iOS App
+      #   env:
+      #     TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
+      #   run: |
+      #        cd ios
+      #         fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
+      #         xcodebuild \
+      #           -workspace "IosGithubActionBuild.xcworkspace" \
+      #           -scheme "IosGithubActionBuild" \
+      #           -destination "generic/platform=iOS" \
+      #           -configuration Release \
+      #           clean build \
+      #           CODE_SIGN_IDENTITY="iPhone Distribution" \
+      #           CODE_SIGN_STYLE="Manual" \
+      #           PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
+      #           -archivePath "./build/GenericBuild.xcarchive" \
+      #           archive | xcbeautify
+      #         plutil -create xml1 ExportOptions.plist
+      #         plutil -insert method -string "app-store" ExportOptions.plist
+      #         plutil -insert destination -string "export" ExportOptions.plist
+      #         xcodebuild -exportArchive \
+      #           -archivePath "./build/GenericBuild.xcarchive" \
+      #           -exportPath "./build" \
+      #           -exportOptionsPlist "ExportOptions.plist"
 
 
       - name: Build iOS App
@@ -81,7 +80,6 @@ jobs:
           rm -rf ~/Library/Developer/Xcode/DerivedData
           pod deintegrate
           pod install --repo-update
-          security unlock-keychain -p "$CERT_PASSWORD" ~/Library/Keychains/build.keychain
           fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
           export GYM_SCHEME="IosGithubActionBuild"
           export GYM_DESTINATION="generic/platform=iOS"
