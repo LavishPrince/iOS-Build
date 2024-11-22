@@ -82,28 +82,30 @@ jobs:
           rm -rf ~/Library/Developer/Xcode/DerivedData
           pod deintegrate || true
           pod install --repo-update
-          fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
-          xcodebuild \
-            -workspace "IosGithubActionBuild.xcworkspace" \
-            -scheme "IosGithubActionBuild" \
-            -configuration Release \
-            -destination "generic/platform=iOS" \
-            -archivePath "./build/GenericBuild.xcarchive" \
-            CODE_SIGN_IDENTITY="iPhone Distribution" \
-            CODE_SIGN_STYLE=Manual \
-            PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
-            clean archive | xcbeautify
               plutil -create xml1 ExportOptions.plist
               plutil -insert method -string "app-store" ExportOptions.plist
               plutil -insert destination -string "export" ExportOptions.plist
-          xcodebuild -exportArchive \
-            -archivePath "./build/GenericBuild.xcarchive" \
-            -exportPath "./build" \
-            -exportOptionsPlist ./ExportOptions.plist \
-            CODE_SIGN_IDENTITY="iPhone Distribution" \
-            CODE_SIGN_STYLE=Manual \
-            PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" | xcbeautify
-          eza --tree build
+              cat ExportOptions.plist
+          # fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
+          # xcodebuild \
+          #   -workspace "IosGithubActionBuild.xcworkspace" \
+          #   -scheme "IosGithubActionBuild" \
+          #   -configuration Release \
+          #   -destination "generic/platform=iOS" \
+          #   -archivePath "./build/GenericBuild.xcarchive" \
+          #   CODE_SIGN_IDENTITY="iPhone Distribution" \
+          #   CODE_SIGN_STYLE=Manual \
+          #   PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
+          #   clean archive | xcbeautify
+
+          # xcodebuild -exportArchive \
+          #   -archivePath "./build/GenericBuild.xcarchive" \
+          #   -exportPath "./build" \
+          #   -exportOptionsPlist ./ExportOptions.plist \
+          #   CODE_SIGN_IDENTITY="iPhone Distribution" \
+          #   CODE_SIGN_STYLE=Manual \
+          #   PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" | xcbeautify
+          # eza --tree build
           # fastlane run build_ios_app \
           #   scheme:"IosGithubActionBuild" \
           #   workspace:"IosGithubActionBuild.xcworkspace" \
