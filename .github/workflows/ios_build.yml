@@ -86,7 +86,7 @@ jobs:
           fastlane run build_ios_app \
             scheme:"IosGithubActionBuild" \
             workspace:"IosGithubActionBuild.xcworkspace" \
-            export_method:"app-store-connect" \
+            export_method:"app-store" \
             output_directory:"./build" \
             output_name:"GenericBuild.ipa" \
             clean:true \
