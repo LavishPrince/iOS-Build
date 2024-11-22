@@ -75,8 +75,10 @@ jobs:
       - name: Build iOS App
         env:
           TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
+          CERT_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         run: |
           cd ios
+          security unlock-keychain -p "$CERT_PASSWORD" ~/Library/Keychains/build.keychain
           fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
           export GYM_SCHEME="IosGithubActionBuild"
           export GYM_DESTINATION="generic/platform=iOS"
