@@ -38,3 +38,4 @@ target 'IosGithubActionBuild' do
     )
   end
 end
+install! 'cocoapods', :disable_input_output_paths => true
