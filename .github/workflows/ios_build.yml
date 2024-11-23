@@ -3,7 +3,7 @@ name: iOS Build and Deploy
 on:
   workflow_dispatch:
 jobs:
-  ios-buils-and-upload:
+  ios-build-and-upload:
     runs-on: macos-latest # Uses macOS runner with Xcode pre-installed
 
     steps:
