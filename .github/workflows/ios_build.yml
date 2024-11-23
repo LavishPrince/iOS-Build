@@ -7,6 +7,7 @@ jobs:
     runs-on: macos-latest # Uses macOS runner with Xcode pre-installed
 
     steps:
+          
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -17,7 +18,8 @@ jobs:
           node-version: '20'
 
       - name: Install Fastlane
-        run: brew install fastlane cocoapods eza
+        run: |
+          brew install fastlane cocoapods eza
       # Install dependencies
       - name: Install npm dependencies
         run: npm install
@@ -79,10 +81,10 @@ jobs:
         run: |
           cd ios
           chmod -R 777 .
-          plutil -create xml1 ExportOptions.plist
-          plutil -insert method -string "app-store-connect" ExportOptions.plist
-          plutil -insert compileBitcode -bool false ExportOptions.plist
-          plutil -insert uploadSymbols -bool false ExportOptions.plist
+          # plutil -create xml1 ExportOptions.plist
+          # plutil -insert method -string "app-store-connect" ExportOptions.plist
+          # plutil -insert compileBitcode -bool false ExportOptions.plist
+          # plutil -insert uploadSymbols -bool false ExportOptions.plist
 
 
           # cat ExportOptions.plist
@@ -91,29 +93,27 @@ jobs:
           pod install --repo-update
              
           fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
-          xcodebuild \
-            -workspace "IosGithubActionBuild.xcworkspace" \
-            -scheme "IosGithubActionBuild" \
-            -configuration Release \
-            -destination "generic/platform=iOS" \
-            -archivePath "./build/IosGithubActionBuild.xcarchive" \
-            CODE_SIGN_IDENTITY="iPhone Distribution" \
-            CODE_SIGN_STYLE=Manual \
-            ENABLE_TESTABILITY=YES \
-            PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
-            clean archive | xcbeautify
+          # xcodebuild \
+          #   -workspace "IosGithubActionBuild.xcworkspace" \
+          #   -scheme "IosGithubActionBuild" \
+          #   -configuration Release \
+          #   -destination "generic/platform=iOS" \
+          #   -archivePath "./build/IosGithubActionBuild.xcarchive" \
+          #   CODE_SIGN_IDENTITY="iPhone Distribution" \
+          #   CODE_SIGN_STYLE=Manual \
+          #   PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
+          #   clean archive | xcbeautify
           
-          # fastlane run build_ios_app \
-          #   scheme:"IosGithubActionBuild" \
-          #   workspace:"IosGithubActionBuild.xcworkspace" \
-          #   export_method:"app-store" \
-          #   output_directory:"./build" \
-          #   export_options:"./ExportOptions.plist" \
-          #   output_name:"GenericBuild.ipa" \
-          #   destination:"generic/platform=iOS" \
-          #   configuration:"Release" \
-          #   clean:true \
-          #   xcargs:"ENABLE_TESTABILITY=YES CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
+          fastlane run build_ios_app \
+            scheme:"IosGithubActionBuild" \
+            workspace:"IosGithubActionBuild.xcworkspace" \
+            export_method:"app-store" \
+            output_directory:"./build" \
+            output_name:"GenericBuild.ipa" \
+            destination:"generic/platform=iOS" \
+            configuration:"Release" \
+            clean:true \
+            xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
             eza --tree build
           
           
@@ -127,21 +127,21 @@ jobs:
       #     fastlane run upload_to_testflight \
       #       ipa:"./build/GenericBuild.ipa"
 
-      - name: Archive ipa
-        run: |
-          cd ios
-          rm -rf ~/Library/Developer/Xcode/DerivedData
-          xcodebuild -exportArchive \
-              -archivePath "./build/IosGithubActionBuild.xcarchive" \
-              -exportPath "./build/IosGithubActionBuild.ipa" \
-              -exportOptionsPlist ./ExportOptions.plist \
-              -verbose
-              -destination "generic/platform=iOS"
-              CODE_SIGN_IDENTITY="iPhone Distribution" \
-              ENABLE_TESTABILITY=YES \
-              CODE_SIGN_STYLE=Manual \
-              PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" 
-          eza --tree build
+      # - name: Archive ipa
+      #   run: |
+      #     cd ios
+      #     rm -rf ~/Library/Developer/Xcode/DerivedData
+      #     xcodebuild -exportArchive \
+      #         -archivePath "./build/IosGithubActionBuild.xcarchive" \
+      #         -exportPath "./build/IosGithubActionBuild.ipa" \
+      #         -exportOptionsPlist ./ExportOptions.plist \
+      #         -verbose
+      #         -destination "generic/platform=iOS"
+      #         CODE_SIGN_IDENTITY="iPhone Distribution" \
+      #         ENABLE_TESTABILITY=YES \
+      #         CODE_SIGN_STYLE=Manual \
+      #         PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" 
+      #     eza --tree build
       - name: Cleanup
         if: always()
         run: |
