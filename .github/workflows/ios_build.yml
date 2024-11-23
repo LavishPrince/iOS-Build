@@ -102,13 +102,13 @@ jobs:
             PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
             clean archive | xcbeautify
 
-          xcodebuild -exportArchive \
-            -archivePath "./build/GenericBuild.xcarchive" \
-            -exportPath "./build/GenericBuild.ipa" \
-            -exportOptionsPlist ./ExportOptions.plist \
-            CODE_SIGN_IDENTITY="iPhone Distribution" \
-            CODE_SIGN_STYLE=Manual \
-            PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" | xcbeautify
+          # xcodebuild -exportArchive \
+          #   -archivePath "./build/GenericBuild.xcarchive" \
+          #   -exportPath "./build/GenericBuild.ipa" \
+          #   -exportOptionsPlist ./ExportOptions.plist \
+          #   CODE_SIGN_IDENTITY="iPhone Distribution" \
+          #   CODE_SIGN_STYLE=Manual \
+          #   PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" | xcbeautify
           
           # fastlane run build_ios_app \
           #   scheme:"IosGithubActionBuild" \
@@ -120,7 +120,7 @@ jobs:
           #   configuration:"Release" \
           #   clean:true \
           #   xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
-          eza --tree build
+          
           
       # - name:  Ios App Upload
       #   run: |
@@ -132,7 +132,16 @@ jobs:
       #     fastlane run upload_to_testflight \
       #       ipa:"./build/GenericBuild.ipa"
 
-          
+      - name: Archive ipa
+        run: |
+          xcodebuild -exportArchive \
+              -archivePath "./build/GenericBuild.xcarchive" \
+              -exportPath "./build/GenericBuild.ipa" \
+              -exportOptionsPlist ./ExportOptions.plist \
+              CODE_SIGN_IDENTITY="iPhone Distribution" \
+              CODE_SIGN_STYLE=Manual \
+              PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" | xcbeautify
+          eza --tree build
       - name: Cleanup
         if: always()
         run: |
