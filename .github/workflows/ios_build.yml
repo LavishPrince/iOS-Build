@@ -79,7 +79,7 @@ jobs:
         run: |
           cd ios
           chmod -R 777 .
-          # plutil -create xml1 ExportOptions.plist
+          plutil -create xml1 ExportOptions.plist
           plutil -insert method -string "app-store-connect" ExportOptions.plist
           plutil -insert compileBitcode -bool false ExportOptions.plist
           # plutil -insert uploadSymbols -bool true ExportOptions.plist
