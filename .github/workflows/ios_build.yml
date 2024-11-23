@@ -136,13 +136,13 @@ jobs:
         run: |
           cd ios
           rm -rf ~/Library/Developer/Xcode/DerivedData
-          xcodebuild -exportArchive -exportFormat ipa \
+          xcodebuild -exportArchive \
               -archivePath "./build/IosGithubActionBuild.xcarchive" \
               -exportPath "./build/IosGithubActionBuild.ipa" \
               -exportOptionsPlist ./ExportOptions.plist \
-              CODE_SIGN_IDENTITY="iPhone Distribution" \
-              CODE_SIGN_STYLE=Manual \
-              PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" 
+              # CODE_SIGN_IDENTITY="iPhone Distribution" \
+              # CODE_SIGN_STYLE=Manual \
+              # PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" 
           eza --tree build
       - name: Cleanup
         if: always()
