@@ -4,13 +4,9 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: macos-14 # Uses macOS runner with Xcode pre-installed
+    runs-on: macos-latest # Uses macOS runner with Xcode pre-installed
 
     steps:
-      - name: Setup xcode 14
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '14'
           
       - name: Checkout repository
         uses: actions/checkout@v3
