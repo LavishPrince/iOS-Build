@@ -82,7 +82,7 @@ jobs:
           plutil -create xml1 ExportOptions.plist
           plutil -insert method -string "app-store-connect" ExportOptions.plist
           plutil -insert compileBitcode -bool false ExportOptions.plist
-          # plutil -insert uploadSymbols -bool true ExportOptions.plist
+          plutil -insert uploadSymbols -bool false ExportOptions.plist
 
 
           # cat ExportOptions.plist
