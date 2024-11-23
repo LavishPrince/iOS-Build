@@ -107,7 +107,7 @@ jobs:
             workspace:"IosGithubActionBuild.xcworkspace" \
             export_method:"app-store" \
             output_directory:"./build" \
-            export_options:"{compileBitcode: false, method: 'app-store'}" \
+            export_options:{compileBitcode: false, method: 'app-store'} \
             output_name:"GenericBuild.ipa" \
             destination:"generic/platform=iOS" \
             configuration:"Release" \
