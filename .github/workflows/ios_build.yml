@@ -89,7 +89,7 @@ jobs:
             <string>${{ secrets.TEAM_ID }}</string>
             <key>provisioningProfiles</key>
             <dict>
-              <key>com.example.app</key>
+              <key>org.reactjs.native.example.IosGithubActionBuild</key>
               <string>app-store-profile-sample-github-actions</string>
             </dict>
           </dict>
