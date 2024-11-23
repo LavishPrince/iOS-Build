@@ -52,6 +52,7 @@ jobs:
         run: |
           cd ios
           chmod -R 777 .
+          export FASTLANE_SKIP_LOGS=true
           plutil -create xml1 ExportOptions.plist
           plutil -insert method -string "app-store-connect" ExportOptions.plist
           plutil -insert compileBitcode -bool false ExportOptions.plist
@@ -82,7 +83,7 @@ jobs:
             configuration:"Release" \
             export_options:"ExportOptions.plist" \
             clean:"true" \
-            xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'" > build.log
+            xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
             eza --tree build
           
           
