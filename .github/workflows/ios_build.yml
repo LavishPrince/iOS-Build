@@ -135,6 +135,7 @@ jobs:
       - name: Archive ipa
         run: |
           cd ios
+          rm -rf ~/Library/Developer/Xcode/DerivedData
           xcodebuild -exportArchive -exportFormat ipa \
               -archivePath "./build/IosGithubActionBuild.xcarchive" \
               -exportPath "./build/IosGithubActionBuild.ipa" \
