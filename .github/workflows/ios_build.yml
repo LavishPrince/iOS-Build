@@ -96,7 +96,7 @@ jobs:
             -scheme "IosGithubActionBuild" \
             -configuration Release \
             -destination "generic/platform=iOS" \
-            -archivePath "./build/" \
+            -archivePath "./build/IosGithubActionBuild.xcarchive" \
             CODE_SIGN_IDENTITY="iPhone Distribution" \
             CODE_SIGN_STYLE=Manual \
             PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
