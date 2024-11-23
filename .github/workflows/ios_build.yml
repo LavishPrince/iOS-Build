@@ -76,6 +76,8 @@ jobs:
 
       # Step 8: Export the archive to an IPA file
       - name: Export IPA File
+        env:
+          TEAM_ID: ${{ secrets.TEAM_ID }}
         run: |
           cd ios
           cat <<EOF > ExportOptions.plist
