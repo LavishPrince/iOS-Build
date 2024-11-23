@@ -1,117 +1,156 @@
+# .github/workflows/ios-build.yml
 name: iOS Build and Deploy
-
 on:
   workflow_dispatch:
-
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-latest # Uses macOS runner with Xcode pre-installed
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
+      # Set up Node.js 22
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      # Step 3: Install dependencies
-      - name: Install Fastlane and CocoaPods
-        run: |
-          brew install fastlane cocoapods
-          gem install bundler # Optional, for Ruby projects with a Gemfile
-          pod setup
+      - name: Install Fastlane
+        run: brew install fastlane cocoapods eza
+      # Install dependencies
       - name: Install npm dependencies
         run: npm install
 
-      # Step 4: Configure provisioning profile
+      # - name: Install pod dependencies
+      #   run: cd ios && pod install
+      # Build the iOS app
+      #- name: Build iOS App
+      #  run: cd ios && fastlane build
       - name: Set up provisioning profile
-        run: |
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          echo "$PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+        run: mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles && echo "$PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
         env:
           PROVISIONING_PROFILE: ${{ secrets.PROVISIONING_PROFILE }}
 
-      # Step 5: Configure certificate
       - name: Set up certificate
         run: |
           echo "$CERTIFICATE_P12" | base64 --decode > certificate.p12
           security create-keychain -p "github" build.keychain
           security import certificate.p12 -k ~/Library/Keychains/build.keychain -P "$CERT_PASSWORD" -T /usr/bin/codesign
           security list-keychains -s ~/Library/Keychains/build.keychain
+          security list-keychains -s build.keychain
           security unlock-keychain -p "github" build.keychain
+          security set-keychain-settings build.keychain
           security set-key-partition-list -S apple-tool:,apple: -s -k "github" build.keychain
         env:
           CERTIFICATE_P12: ${{ secrets.CERTIFICATE_P12 }}
           CERT_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
 
-      # Step 6: Prepare dependencies
-      - name: Prepare dependencies
+      # - name: Build iOS App
+      #   env:
+      #     TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
+      #   run: |
+      #        cd ios
+      #         fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
+      #         xcodebuild \
+      #           -workspace "IosGithubActionBuild.xcworkspace" \
+      #           -scheme "IosGithubActionBuild" \
+      #           -destination "generic/platform=iOS" \
+      #           -configuration Release \
+      #           clean build \
+      #           CODE_SIGN_IDENTITY="iPhone Distribution" \
+      #           CODE_SIGN_STYLE="Manual" \
+      #           PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
+      #           -archivePath "./build/GenericBuild.xcarchive" \
+      #           archive | xcbeautify
+      #         plutil -create xml1 ExportOptions.plist
+      #         plutil -insert method -string "app-store" ExportOptions.plist
+      #         plutil -insert destination -string "export" ExportOptions.plist
+      #         xcodebuild -exportArchive \
+      #           -archivePath "./build/GenericBuild.xcarchive" \
+      #           -exportPath "./build" \
+      #           -exportOptionsPlist "ExportOptions.plist"
+
+
+      - name: Build iOS App
+        env:
+          TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
+          CERT_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
         run: |
           cd ios
+          chmod -R 777 .
+          plutil -create xml1 ExportOptions.plist
+          plutil -insert method -string "app-store-connect" ExportOptions.plist
+          plutil -insert uploadBitcode -bool true ExportOptions.plist
+          # plutil -insert uploadSymbols -bool true ExportOptions.plist
+
+
+          # cat ExportOptions.plist
+          rm -rf ~/Library/Developer/Xcode/DerivedData
           pod deintegrate || true
           pod install --repo-update
-
-      # Step 7: Build the app and create the archive
-      - name: Build and Archive iOS App
-        env:
-          TEAM_ID: ${{ secrets.TEAM_ID }}
-        run: |
-          cd ios
+             
+          fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
           xcodebuild \
             -workspace "IosGithubActionBuild.xcworkspace" \
             -scheme "IosGithubActionBuild" \
             -configuration Release \
             -destination "generic/platform=iOS" \
             -archivePath "./build/IosGithubActionBuild.xcarchive" \
-            clean archive \
             CODE_SIGN_IDENTITY="iPhone Distribution" \
             CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM="$TEAM_ID" \
             PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" \
-          | xcbeautify
+            clean archive | xcbeautify
 
-      # Step 8: Export the archive to an IPA file
-      - name: Export IPA File
-        env:
-          TEAM_ID: ${{ secrets.TEAM_ID }}
+          # xcodebuild -exportArchive \
+          #   -archivePath "./build/GenericBuild.xcarchive" \
+          #   -exportPath "./build/GenericBuild.ipa" \
+          #   -exportOptionsPlist ./ExportOptions.plist \
+          #   CODE_SIGN_IDENTITY="iPhone Distribution" \
+          #   CODE_SIGN_STYLE=Manual \
+          #   PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" | xcbeautify
+          
+          # fastlane run build_ios_app \
+          #   scheme:"IosGithubActionBuild" \
+          #   workspace:"IosGithubActionBuild.xcworkspace" \
+          #   export_method:"app-store" \
+          #   output_directory:"./build" \
+          #   output_name:"GenericBuild.ipa" \
+          #   destination:"generic/platform=iOS" \
+          #   configuration:"Release" \
+          #   clean:true \
+          #   xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
+          
+          
+      # - name:  Ios App Upload
+      #   run: |
+      #     fastlane run app_store_connect_api_key \
+      #     key_id:${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }} \
+      #     issuer_id:${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} \
+      #     key_content:${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
+
+      #     fastlane run upload_to_testflight \
+      #       ipa:"./build/GenericBuild.ipa"
+
+      - name: Archive ipa
         run: |
           cd ios
-          cat <<EOF > ExportOptions.plist
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key>
-            <string>app-store</string>
-            <key>teamID</key>
-            <string>${{ secrets.TEAM_ID }}</string>
-            <key>provisioningProfiles</key>
-            <dict>
-              <key>org.reactjs.native.example.IosGithubActionBuild</key>
-              <string>app-store-profile-sample-github-actions</string>
-            </dict>
-          </dict>
-          </plist>
-          EOF
-
+          rm -rf ~/Library/Developer/Xcode/DerivedData
+          rm -rf /var/folders/*
           xcodebuild -exportArchive \
-            -archivePath "./build/IosGithubActionBuild.xcarchive" \
-            -exportPath "./build" \
-            -exportOptionsPlist ExportOptions.plist \
-          | xcbeautify
-
-      # Step 9: Verify exported files
-      - name: Verify Build Directory
-        run: ls -R ios/build
-
-      # Step 10: Cleanup sensitive data
+              -archivePath "./build/IosGithubActionBuild.xcarchive" \
+              -exportPath "./build/IosGithubActionBuild.ipa" \
+              -exportOptionsPlist ./ExportOptions.plist \
+              -verbose
+              # CODE_SIGN_IDENTITY="iPhone Distribution" \
+              # CODE_SIGN_STYLE=Manual \
+              # PROVISIONING_PROFILE_SPECIFIER="app-store-profile-sample-github-actions" 
+          eza --tree build
       - name: Cleanup
         if: always()
         run: |
-          rm -rf ios/build/*.p12
-          rm -rf ios/build/*.mobileprovision
+          # Remove the decrypted certificate and provisioning profile
+          rm -rf certificate.p12 profile.mobileprovision
+          # Delete the keychain after the build process
           security delete-keychain build.keychain
+            
