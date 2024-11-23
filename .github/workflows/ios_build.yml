@@ -134,6 +134,7 @@ jobs:
 
       - name: Archive ipa
         run: |
+          cd ios
           xcodebuild -exportArchive \
               -archivePath "./build/GenericBuild.xcarchive" \
               -exportPath "./build/GenericBuild.ipa" \
