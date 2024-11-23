@@ -85,8 +85,8 @@ jobs:
           chmod -R 777 .
           plutil -create xml1 ExportOptions.plist
           plutil -insert method -string "app-store-connect" ExportOptions.plist
-          plutil -insert compileBitcode -bool false ExportOptions.plist
-          plutil -insert uploadSymbols -bool false ExportOptions.plist
+          # plutil -insert compileBitcode -bool false ExportOptions.plist
+          # plutil -insert uploadSymbols -bool false ExportOptions.plist
           PROFILES_JSON="{"
           PROFILES_JSON+="\"org.reactjs.native.example.IosGithubActionBuild\": \"app-store-profile-sample-github-actions\","
           PROFILES_JSON+="}"
@@ -117,8 +117,8 @@ jobs:
             export_method:"app-store" \
             output_directory:"./build" \
             output_name:"GenericBuild.ipa" \
-            include_symbols:"false" \
-            include_bitcode:"false" \
+            # include_symbols:"false" \
+            # include_bitcode:"false" \
             destination:"generic/platform=iOS" \
             configuration:"Release" \
             export_options:"ExportOptions.plist" \
