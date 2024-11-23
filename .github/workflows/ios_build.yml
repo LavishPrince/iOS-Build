@@ -110,6 +110,8 @@ jobs:
             export_method:"app-store" \
             output_directory:"./build" \
             output_name:"GenericBuild.ipa" \
+            include_symbols:"false" \
+            include_bitcode:"false" \
             destination:"generic/platform=iOS" \
             configuration:"Release" \
             clean:true \
