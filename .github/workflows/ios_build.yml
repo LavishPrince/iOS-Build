@@ -7,6 +7,10 @@ jobs:
     runs-on: macos-latest # Uses macOS runner with Xcode pre-installed
 
     steps:
+      - name: Set up Xcode 14
+        uses: macos-setup-xcode@v2
+        with:
+          xcode-version: '14.0'
       - name: Checkout repository
         uses: actions/checkout@v3
 
