@@ -121,6 +121,7 @@ jobs:
           cd ios
           export PILOT_APPLE_ID="6738489200"
           export PILOT_USERNAME="devops@travancoreanalytics.com"
+          PILOT_APP_IDENTIFIER="org.reactjs.native.example.IosGithubActionBuild"
           fastlane run upload_to_testflight \
             ipa:"./build/GenericBuild.ipa" \
             api_key_path:"./api_key.json"
