@@ -106,25 +106,17 @@ jobs:
       - name: Generate `api_key.json`
         run: |
           cd ios
-          echo '{
-            "key_id": "${APP_STORE_CONNECT_KEY_ID}",
-            "issuer_id": "${APP_STORE_CONNECT_ISSUER_ID}",
-            "key": "${APP_STORE_CONNECT_API_KEY}"
-          }' > api_key.json
+          echo "$APP_STORE_CONNECT_API_KEY" | base64 --decode > api_key.p8
+          xcrun altool --upload-app \
+          --type ios \
+          --file "./build/GenericBuild.ipa" \
+          --apiKey "${{ secrets.APP_STORE_CONNECT_KEY_ID }}" \
+          --apiIssuer "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}" \
+          --private-key @api_key.p8
         env:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
-
-      - name: Upload to Testflight
-        run: |
-          cd ios
-          export PILOT_APPLE_ID="6738489200"
-          export PILOT_USERNAME="devops@travancoreanalytics.com"
-          PILOT_APP_IDENTIFIER="org.reactjs.native.example.IosGithubActionBuild"
-          fastlane run upload_to_testflight \
-            ipa:"./build/GenericBuild.ipa" \
-            api_key_path:"./api_key.json"
             
 
       - name: Cleanup
