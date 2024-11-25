@@ -19,12 +19,12 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Fastlane
-        run: |
-          brew install fastlane cocoapods eza
+      # - name: Install Fastlane
+      #   run: |
+      #     brew install fastlane cocoapods eza
 
-      - name: Install npm dependencies
-        run: npm install
+      # - name: Install npm dependencies
+      #   run: npm install
         
       - name: Set up provisioning profile
         run: mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles && echo "$PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
@@ -104,7 +104,7 @@ jobs:
           #   api_key:'{"key_id":"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}",
           #            "issuer_id":"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}",
           #            "key_filepath":"./api_key.p8"}'
-          cat <<EOF > fastlane/Fastfile
+          cat <<EOF > Fastfile
           default_platform(:ios)
             platform :ios do
                 lane :beta do
@@ -123,7 +123,7 @@ jobs:
             EOF
   
       - name: upload
-        run: cat fastlane/Fastfile # fastlane ios beta
+        run: cat Fastfile # fastlane ios beta
 
       - name: Cleanup
         if: always()
