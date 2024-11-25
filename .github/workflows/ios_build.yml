@@ -111,7 +111,7 @@ jobs:
           --type ios \
           --file "./build/GenericBuild.ipa" \
           --apiKey @api_key.p8 \
-          --apiIssuer "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}"
+          --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID"
         env:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
