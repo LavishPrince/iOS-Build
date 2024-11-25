@@ -91,7 +91,6 @@ jobs:
         
         run: |
           cd ios
-          mkdir fastlane
           export PILOT_APPLE_ID="6738489200"
           export PILOT_USERNAME="devops@travancoreanalytics.com"
           echo "${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}" | base64 --decode > api_key.p8
