@@ -120,7 +120,6 @@ jobs:
                       )
                 end
               end
-            EOF
   
       - name: upload
         run: cd ios && cat fastlane/Fastfile  && fastlane ios beta # fastlane ios beta
