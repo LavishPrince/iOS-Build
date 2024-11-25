@@ -21,7 +21,7 @@ jobs:
 
       - name: Install Fastlane
         run: |
-          brew install fastlane cocoapods eza
+          brew install  --formulae fastlane cocoapods eza
 
       - name: Install npm dependencies
         run: npm install
