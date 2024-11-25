@@ -104,7 +104,7 @@ jobs:
           #   api_key:'{"key_id":"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}",
           #            "issuer_id":"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}",
           #            "key_filepath":"./api_key.p8"}'
-          cat > Fastfile << 'EOF'
+          cat > fastlane/Fastfile << 'EOF'
           default_platform(:ios)
             platform :ios do
                 lane :beta do
@@ -123,7 +123,7 @@ jobs:
             EOF
   
       - name: upload
-        run: cd ios && fastlane -f Fastfile ios beta # fastlane ios beta
+        run: cd ios && cat fastlane/Fastfile  && fastlane ios beta # fastlane ios beta
 
       - name: Cleanup
         if: always()
