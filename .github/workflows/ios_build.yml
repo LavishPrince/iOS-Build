@@ -19,12 +19,12 @@ jobs:
         with:
           node-version: '20'
 
-      # - name: Install Fastlane
-      #   run: |
-      #     brew install fastlane cocoapods eza
+      - name: Install Fastlane
+        run: |
+          brew install fastlane cocoapods eza
 
-      # - name: Install npm dependencies
-      #   run: npm install
+      - name: Install npm dependencies
+        run: npm install
         
       - name: Set up provisioning profile
         run: mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles && echo "$PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
@@ -45,46 +45,46 @@ jobs:
           CERTIFICATE_P12: ${{ secrets.CERTIFICATE_P12 }}
           CERT_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
 
-      # - name: Build iOS App
-      #   env:
-      #     TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
-      #     CERT_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
-      #   run: |
-      #     cd ios
-      #     chmod -R 777 .
-      #     plutil -create xml1 ExportOptions.plist
-      #     plutil -insert method -string "app-store-connect" ExportOptions.plist
-      #     plutil -insert compileBitcode -bool false ExportOptions.plist
-      #     plutil -insert uploadSymbols -bool false ExportOptions.plist
-      #     PROFILES_JSON="{"
-      #     PROFILES_JSON+="\"org.reactjs.native.example.IosGithubActionBuild\": \"app-store-profile-sample-github-actions\","
-      #     PROFILES_JSON+="}"
-      #     plutil -insert provisioningProfiles -json "$PROFILES_JSON" ExportOptions.plist
-      #     plutil -p ExportOptions.plist
+      - name: Build iOS App
+        env:
+          TEAM_ID: ${{ secrets.GYM_EXPORT_TEAM_ID }}
+          CERT_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
+        run: |
+          cd ios
+          chmod -R 777 .
+          plutil -create xml1 ExportOptions.plist
+          plutil -insert method -string "app-store-connect" ExportOptions.plist
+          plutil -insert compileBitcode -bool false ExportOptions.plist
+          plutil -insert uploadSymbols -bool false ExportOptions.plist
+          PROFILES_JSON="{"
+          PROFILES_JSON+="\"org.reactjs.native.example.IosGithubActionBuild\": \"app-store-profile-sample-github-actions\","
+          PROFILES_JSON+="}"
+          plutil -insert provisioningProfiles -json "$PROFILES_JSON" ExportOptions.plist
+          plutil -p ExportOptions.plist
 
 
-      #     # cat ExportOptions.plist
-      #     rm -rf ~/Library/Developer/Xcode/DerivedData
-      #     pod deintegrate || true
-      #     pod install --repo-update
+          # cat ExportOptions.plist
+          rm -rf ~/Library/Developer/Xcode/DerivedData
+          pod deintegrate || true
+          pod install --repo-update
              
-      #     fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
+          fastlane run update_project_team path:"./IosGithubActionBuild.xcodeproj" teamid:"$TEAM_ID"
           
-      #     fastlane run build_ios_app \
-      #       scheme:"IosGithubActionBuild" \
-      #       workspace:"IosGithubActionBuild.xcworkspace" \
-      #       export_method:"app-store" \
-      #       output_directory:"./build" \
-      #       output_name:"GenericBuild.ipa" \
-      #       include_symbols:"false" \
-      #       include_bitcode:"false" \
-      #       destination:"generic/platform=iOS" \
-      #       configuration:"Release" \
-      #       export_options:"ExportOptions.plist" \
-      #       clean:"true" \
-      #       suppress_xcode_output:"true" \
-      #       xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
-      #       eza --tree build
+          fastlane run build_ios_app \
+            scheme:"IosGithubActionBuild" \
+            workspace:"IosGithubActionBuild.xcworkspace" \
+            export_method:"app-store" \
+            output_directory:"./build" \
+            output_name:"GenericBuild.ipa" \
+            include_symbols:"false" \
+            include_bitcode:"false" \
+            destination:"generic/platform=iOS" \
+            configuration:"Release" \
+            export_options:"ExportOptions.plist" \
+            clean:"true" \
+            suppress_xcode_output:"true" \
+            xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
+            eza --tree build
           
           
       - name:  Ios App Upload
@@ -123,7 +123,7 @@ jobs:
             EOF
   
       - name: upload
-        run: cd ios && cat Fastfile # fastlane ios beta
+        run: cd ios && fastlane -f Fastfile ios beta # fastlane ios beta
 
       - name: Cleanup
         if: always()
