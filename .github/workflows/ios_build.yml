@@ -110,9 +110,8 @@ jobs:
           xcrun altool --upload-app \
           --type ios \
           --file "./build/GenericBuild.ipa" \
-          --apiKey "${{ secrets.APP_STORE_CONNECT_KEY_ID }}" \
-          --apiIssuer "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}" \
-          --private-key @api_key.p8
+          --apiKey @api_key.p8 \
+          --apiIssuer "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}"
         env:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
