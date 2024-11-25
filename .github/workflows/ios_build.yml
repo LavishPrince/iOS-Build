@@ -100,8 +100,8 @@ jobs:
 
           fastlane run upload_to_testflight \
             ipa:"./build/GenericBuild.ipa" \
-            api_key:'{"key_id":"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}", \
-                     "issuer_id":"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}", \
+            api_key:'{"key_id":"${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}",
+                     "issuer_id":"${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}",
                      "key_filepath":"./api_key.p8"}'
             
 
