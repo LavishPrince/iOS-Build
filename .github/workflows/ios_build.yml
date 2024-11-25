@@ -52,6 +52,8 @@ jobs:
         run: |
           cd ios
           chmod -R 777 .
+          build_number=$(date +"%Y%m%d%H%M%S")
+          echo $build_number
           plutil -create xml1 ExportOptions.plist
           plutil -insert method -string "app-store-connect" ExportOptions.plist
           plutil -insert compileBitcode -bool false ExportOptions.plist
@@ -82,6 +84,7 @@ jobs:
             configuration:"Release" \
             export_options:"ExportOptions.plist" \
             clean:"true" \
+            build_number: "$build_number" \
             suppress_xcode_output:"true" \
             xcargs:"CODE_SIGN_IDENTITY='iPhone Distribution' CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='app-store-profile-sample-github-actions'"
             eza --tree build
