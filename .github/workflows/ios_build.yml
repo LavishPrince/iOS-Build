@@ -11,13 +11,13 @@ jobs:
         with:
           xcode-version: '15.2'
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Set up Node.js 22
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Fastlane
         run: |
